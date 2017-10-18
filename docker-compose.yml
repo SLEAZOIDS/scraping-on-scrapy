@@ -1,18 +1,19 @@
 version: '2'
 services:
   db:
-    image: mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=password
-      - TZ=Japan
+    image: mongo
     networks:
       - default
     ports:
-      - '3306:3306'
+      - "27017:27017"
+    volumes:
+      - ./mongo/init/:/docker-entrypoint-initdb.d/
+    environment:
+      - MONGO_INITDB_DATABASE=scrapy
   web:
     build: .
     volumes:
-      - ../scraping-on-scrapy:/tmp/scraping-on-scrapy
+      - ./:/tmp/scraping-on-scrapy
     networks:
       - default
     ports:
